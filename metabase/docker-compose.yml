@@ -21,6 +21,6 @@ services:
       - app-network
 networks:
   app-network:
-    external: true
+    driver: bridge
 volumes:
   data:
