@@ -1,0 +1,26 @@
+version: '3'
+services:
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase
+    ports:
+      - "3000:3000"
+    volumes:
+      - data:/metabase
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.metabase.rule=Host(`metabase.arvan.medarose.ir`)"
+      - "traefik.http.routers.metabase.entrypoints=web"
+      - "traefik.http.services.metabase.loadbalancer.server.port=3000"
+      - "traefik.http.routers.panel.service=metabase"
+      - "traefik.http.routers.metabase-secure.entrypoints=websecure"
+      - "traefik.http.routers.metabase-secure.tls.certresolver=myresolver"
+      - "traefik.http.routers.metabase-secure.rule=Host(`metabase.arvan.medarose.ir`)"
+      - "traefik.http.routers.metabase-secure.service=metabase"
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true
+volumes:
+  data:
